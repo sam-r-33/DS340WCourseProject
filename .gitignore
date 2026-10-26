@@ -1,0 +1,20 @@
+# Large data and model files (never commit these)
+*.pt
+*.pth
+*.zip
+*.npy
+*.mp4
+*.mov
+*.avi
+checkpoints/
+runs/
+video_segments*/
+tracked_frames/
+frames/
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.env
+.DS_Store
