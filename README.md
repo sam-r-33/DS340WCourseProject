@@ -28,6 +28,7 @@ Run **`03_FLAIR_efficient_analysis.ipynb`**. The other two are kept to show how 
 
 - `notebooks/` : the three notebooks described above
 - `results/` : outputs from the blacktip run (notebook 03)
+  - `analysis_run_output.pdf`: printed Colab output of the full notebook 03 run, including the review plots and tables
   - `funnel.json`: stage counts and compute (frame-passes)
   - `track_features.csv`: per-track features for all 8 tracks FLAIR created
   - `clip_candidates.csv`: CLIP scores for all 22 candidate boxes
