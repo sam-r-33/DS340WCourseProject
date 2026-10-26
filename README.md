@@ -24,6 +24,17 @@ Run **`03_FLAIR_efficient_analysis.ipynb`**. The other two are kept to show how 
 | `notebooks/02_FLAIR_efficient.ipynb` | Cleanup of 01: dead code removed, all paths and settings in one config cell, early error checks, results saved to Drive, built-in regression check. The algorithm and parameters are unchanged. |
 | `notebooks/03_FLAIR_efficient_analysis.ipynb` | 02 plus read-only instrumentation: work counters, a snapshot of every track before FLAIR's final filter, a per-track feature table, and a comparison of CLIP scores for candidates on and off the kept track. Pipeline masks are unchanged. |
 
+## Repository layout
+
+- `notebooks/` : the three notebooks described above
+- `results/` : outputs from the blacktip run (notebook 03)
+  - `funnel.json`: stage counts and compute (frame-passes)
+  - `track_features.csv`: per-track features for all 8 tracks FLAIR created
+  - `clip_candidates.csv`: CLIP scores for all 22 candidate boxes
+  - `candidate_summary.json`: summary of the on-track vs. off-track comparison
+  - `clip_candidates.png`: plot of those scores
+  - `run_info.json`: configuration, timings and environment
+
 ## How to run (Colab)
 
 1. Open `03_FLAIR_efficient_analysis.ipynb` in Google Colab and choose a **GPU** runtime.
