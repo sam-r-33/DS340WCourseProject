@@ -1,0 +1,97 @@
+{
+  "stage": "final",
+  "config": {
+    "PROJECT_DIR": "/content/drive/MyDrive/DS340WCourseProject",
+    "SOURCE_VIDEO": "/content/drive/MyDrive/DS340WCourseProject/FLAIR_code/FLAIR/example_video_blacktip.mp4",
+    "WORK_DIR": "/content/flair_work",
+    "RUN_NAME": "analysis_dev",
+    "OVERWRITE": true,
+    "CLIP_START": "00:00:00",
+    "CLIP_END": "00:00:08",
+    "MODEL_CFG": "sam2_hiera_l.yaml",
+    "VOS_OPTIMIZED": false,
+    "CHECKPOINT": "/content/drive/MyDrive/checkpoints/sam2_hiera_large.pt",
+    "MASK_GENERATOR_PARAMS": {
+      "points_per_side": 32,
+      "points_per_batch": 32,
+      "pred_iou_thresh": 0.7,
+      "stability_score_thresh": 0.92,
+      "stability_score_offset": 0.7,
+      "crop_n_layers": 1,
+      "box_nms_thresh": 0.3,
+      "crop_nms_thresh": 0.3,
+      "crop_n_points_downscale_factor": 2,
+      "min_mask_region_area": 0,
+      "use_m2m": false
+    },
+    "RUN_EVERY_N_FRAMES": 30,
+    "MIN_MASK_LENGTH": 75,
+    "MAX_MASK_LENGTH": 300,
+    "BBOX_BUFFER": 25,
+    "WINDOW_LENGTH": 3,
+    "CLIP_CONFIDENCE": 0.95,
+    "CLIP_PROMPTS": [
+      "A drone image of white shape on surface of the ocean",
+      "A clear zoomed-in drone image of a complete dark nurse shark in the ocean with distinct pectoral fins and tail",
+      "A drone image of the ocean with no distinct sharks",
+      "A drone image of a rock under the surface of the ocean with no sharks",
+      "A drone image of sand in the ocean",
+      "A drone image of rocks on land"
+    ],
+    "CLIP_CORRECT": [
+      1
+    ],
+    "N_PER_MASK": 9,
+    "RESIZE_FACTOR": 0.3,
+    "KEEP_KEYS": [
+      2
+    ],
+    "TRACK_CLIP_SAMPLES": 5,
+    "CANDIDATE_LABEL_IOU": 0.5
+  },
+  "timings_s": {
+    "extract_frames": 3.29,
+    "mask_generation": 46.89,
+    "clip_filtering": 7.47,
+    "propagation": 171.13
+  },
+  "regression": {
+    "frames_compared": 237,
+    "frames_both_empty": 0,
+    "frames_only_in_baseline": 0,
+    "frames_only_in_new": 0,
+    "mean_dice": 1.0,
+    "min_dice": 1.0,
+    "threshold": 0.95,
+    "passed": true
+  },
+  "funnel": {
+    "sampled_frames": 8,
+    "video_frames": 237,
+    "amg_masks_raw": 435,
+    "amg_masks_after_size_filter": 22,
+    "clip_candidates_scored": 22,
+    "clip_candidates_accepted": 13,
+    "tracks_created": 8,
+    "tracks_confirmed": 1,
+    "tracks_discarded_by_flair": 7,
+    "tracks_kept_by_KEEP_KEYS": 1,
+    "propagate_calls": 8,
+    "propagation_frame_passes": 986,
+    "frame_passes_per_video_frame": 4.16,
+    "frame_passes_new_calls_only_confirmed_tracks": 121,
+    "frame_passes_new_calls_only_discarded_tracks": 747,
+    "frame_passes_new_calls_mixed": 0,
+    "frame_passes_repropagation": 118,
+    "stage_seconds": {
+      "mask_generation": 46.89,
+      "clip_filtering": 7.47,
+      "propagation": 171.13
+    }
+  },
+  "environment": {
+    "torch": "2.6.0+cu124",
+    "gpu": "NVIDIA L4",
+    "transformers": "4.51.3"
+  }
+}

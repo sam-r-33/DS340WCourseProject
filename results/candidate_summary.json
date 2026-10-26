@@ -1,0 +1,12 @@
+{
+  "n_candidates": 22,
+  "n_on_kept_track": 7,
+  "n_not_on_kept_track": 15,
+  "n_unlabelled": 0,
+  "accepted_on_kept_track": 7,
+  "accepted_not_on_kept_track": 6,
+  "p_target_gap_pos_min_minus_neg_max": -0.002,
+  "p_target_negatives_scoring_at_least_weakest_positive": 2,
+  "margin_gap_pos_min_minus_neg_max": -0.7526,
+  "margin_negatives_scoring_at_least_weakest_positive": 3
+}

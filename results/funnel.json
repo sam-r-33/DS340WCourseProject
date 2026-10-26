@@ -1,0 +1,24 @@
+{
+  "sampled_frames": 8,
+  "video_frames": 237,
+  "amg_masks_raw": 435,
+  "amg_masks_after_size_filter": 22,
+  "clip_candidates_scored": 22,
+  "clip_candidates_accepted": 13,
+  "tracks_created": 8,
+  "tracks_confirmed": 1,
+  "tracks_discarded_by_flair": 7,
+  "tracks_kept_by_KEEP_KEYS": 1,
+  "propagate_calls": 8,
+  "propagation_frame_passes": 986,
+  "frame_passes_per_video_frame": 4.16,
+  "frame_passes_new_calls_only_confirmed_tracks": 121,
+  "frame_passes_new_calls_only_discarded_tracks": 747,
+  "frame_passes_new_calls_mixed": 0,
+  "frame_passes_repropagation": 118,
+  "stage_seconds": {
+    "mask_generation": 46.89,
+    "clip_filtering": 7.47,
+    "propagation": 171.13
+  }
+}
