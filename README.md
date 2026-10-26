@@ -48,8 +48,8 @@ Results are saved to `PROJECT_DIR/runs/<RUN_NAME>/` on Drive: zipped masks, boxe
 
 We use the public dataset released with the FLAIR paper:
 
-- Zenodo record: https://zenodo.org/records/15845961 (DOI 10.5281/zenodo.15845961, CC BY 4.0)
-- FLAIR code archive: https://zenodo.org/records/16056060 (DOI 10.5281/zenodo.16056060, MIT)
+- Zenodo record: https://doi.org/10.5281/zenodo.15845961 (DOI 10.5281/zenodo.15845961, CC BY 4.0)
+- FLAIR code archive: https://doi.org/10.5281/zenodo.16056059 (DOI 10.5281/zenodo.16056060, MIT)
 
 The dataset is about 45 GB, so it is **not** stored in this repository. For the results below we used the example blacktip reef shark clip (`example_video_blacktip.mp4`, from `FLAIR_code.zip` in the Zenodo record and in the original FLAIR repository), first 8 seconds, 237 frames.
 
