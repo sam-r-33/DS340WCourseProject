@@ -3,7 +3,7 @@
 This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks in aerial video, and adds instrumentation to study where the pipeline spends its compute and how reliable its automatic filtering is.
 
 - Course project: DS340W, Penn State
-- Team: *[add team member names]*
+- Team: Sam Ruch & Shawn Agaon
 - Original paper: Lalgudi et al. (2025), *Zero-shot shark tracking and biometrics from aerial imagery*, Methods in Ecology and Evolution (arXiv:2501.05717)
 - Original code (MIT): https://github.com/conservation-technology-group/FLAIR
 
