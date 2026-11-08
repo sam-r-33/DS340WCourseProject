@@ -1,6 +1,6 @@
 # FLAIR reproduction and analysis (DS340W midterm)
 
-This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks in aerial video, and adds instrumentation to study where the pipeline spends its compute and how reliable its automatic filtering is.
+This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks in aerial video, and adds instrumentation to study where the pipeline spends computation and how its candidate and track filtering behaves.
 
 - Course project: DS340W, Penn State
 - Team: Sam Ruch & Shawn Agaon
@@ -16,12 +16,12 @@ This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks i
 
 ## Notebooks
 
-Run **`03_FLAIR_efficient_analysis.ipynb`**. The other two are kept to show how the work developed.
+**`02_FLAIR_efficient.ipynb`** is our reproduction of the parent paper's pipeline. **`03_FLAIR_efficient_analysis.ipynb`** builds on it for our own analysis. `01` is the original-style baseline.
 
 | Notebook | What it is |
 |---|---|
 | `notebooks/01_FLAIR_baseline.ipynb` | Our working copy of the original FLAIR Colab notebook, adapted to run from Google Drive. |
-| `notebooks/02_FLAIR_efficient.ipynb` | Cleanup of 01: dead code removed, all paths and settings in one config cell, early error checks, results saved to Drive, built-in regression check. The algorithm and parameters are unchanged. |
+| `notebooks/02_FLAIR_efficient.ipynb` | Cleanup of 01: dead code removed, all paths and settings in one config cell, early error checks, results saved to Drive, built-in regression check. The core FLAIR algorithm and reproduction parameters are preserved; on the example clip, the cleaned notebook matches the baseline output (mean Dice 1.0). The notebook ends with a Parent Paper Reproduction Check section. |
 | `notebooks/03_FLAIR_efficient_analysis.ipynb` | 02 plus read-only instrumentation: work counters, a snapshot of every track before FLAIR's final filter, a per-track feature table, and a comparison of CLIP scores for candidates on and off the kept track. Pipeline masks are unchanged. |
 
 ## Repository layout
@@ -38,19 +38,19 @@ Run **`03_FLAIR_efficient_analysis.ipynb`**. The other two are kept to show how 
 
 ## How to run (Colab)
 
-1. Open `03_FLAIR_efficient_analysis.ipynb` in Google Colab and choose a **GPU** runtime.
+1. Open `02_FLAIR_efficient.ipynb` (the reproduction), or `03_FLAIR_efficient_analysis.ipynb` for the analysis, in Google Colab and choose a **GPU** runtime.
 2. Put the input video on Google Drive and edit the **Configuration** cell: `PROJECT_DIR`, `SOURCE_VIDEO`, and optionally `RUN_NAME`, `CLIP_START` / `CLIP_END`.
-3. Run all. The first run installs dependencies and downloads the SAM2 checkpoint (a few minutes).
+3. Run all. The first run installs dependencies and downloads the SAM2 checkpoint if it is not already on Drive (a few minutes).
 4. Check the review grid, set `KEEP_KEYS` to the track ID(s) that are true sharks, and run again if needed.
 
-Results are saved to `PROJECT_DIR/runs/<RUN_NAME>/` on Drive: zipped masks, boxes, the tracked video, `run_info.json`, and an `analysis/` folder.
+Results are saved to `PROJECT_DIR/runs/<RUN_NAME>/` on Drive: zipped masks, boxes, the tracked video, `run_info.json`, and an `analysis/` folder (notebook 03 only).
 
 ## Data
 
 We use the public dataset released with the FLAIR paper:
 
 - Zenodo record: https://doi.org/10.5281/zenodo.15845961 (DOI 10.5281/zenodo.15845961, CC BY 4.0)
-- FLAIR code archive: https://doi.org/10.5281/zenodo.16056059 (DOI 10.5281/zenodo.16056060, MIT)
+- FLAIR code archive: https://doi.org/10.5281/zenodo.16056059 (DOI 10.5281/zenodo.16056059, MIT)
 
 The dataset is about 45 GB, so it is **not** stored in this repository. For the results below we used the example blacktip reef shark clip (`example_video_blacktip.mp4`, from `FLAIR_code.zip` in the Zenodo record and in the original FLAIR repository), first 8 seconds, 237 frames.
 
@@ -58,7 +58,7 @@ The dataset is about 45 GB, so it is **not** stored in this repository. For the 
 
 All numbers come from a single 8-second blacktip shark clip and are descriptive, not a validated evaluation. Raw outputs are in `results/`.
 
-**Reproduction check.** The cleaned pipeline's pruned masks matched the original notebook's pruned masks on all 237 frames (regression check: PASS, threshold mean Dice 0.95).
+**Reproduction check.** Notebook 02 on the first 8 seconds of the example blacktip clip (237 frames, NVIDIA L4) produced pruned masks matching the original notebook's output (mean and minimum Dice 1.0; regression check: PASS, threshold mean Dice 0.95). **This compares against the original notebook's output, not the paper's ground-truth Dice.**
 
 **Pipeline funnel**
 
@@ -76,18 +76,19 @@ All numbers come from a single 8-second blacktip shark clip and are descriptive,
 
 **CLIP scores.** We labeled each CLIP candidate by whether it overlaps the track kept in `KEEP_KEYS` (7 candidates on the kept track, 15 not). The weakest on-track probability was 0.992 and two off-track candidates scored above it; a logit margin (target prompt minus the strongest other prompt) was no better (three off-track candidates above the weakest on-track value). So a single-frame CLIP score did not cleanly separate shark from non-shark candidates on this clip.
 
-**Observation to confirm.** Two deleted tracks (tracks 1 and 6) appear to overlap the kept shark; they probably started as separate tracks because their candidate boxes overlapped the existing shark track below FLAIR's 0.7 duplicate threshold. We are verifying this with a per-frame mask-overlap check.
+**Observation to confirm.** Two deleted tracks (tracks 1 and 6) appear to overlap the kept shark; they may have started as separate tracks because their candidate boxes overlapped the existing shark track below FLAIR's 0.7 duplicate threshold. We are verifying this with a per-frame mask-overlap check.
 
 ## Limitations
 
 - One clip, one animal. Nothing here shows that any filter rule generalizes.
 - Candidate labels come from our own `KEEP_KEYS` choice.
 - Tracks that overlap the shark but were deleted count as "deleted" in the compute figures, not as false detections.
+- The reproduction check shows our cleaned notebook matches the original notebook's output. We have not yet reproduced the paper's reported Dice score against ground-truth masks.
 
 ## Planned work
 
-- Evaluate whether track-level evidence (how long a mask persists within its propagation window, CLIP scores across a track's frames, mask geometry) can replace the manual pruning step, on multiple videos with held-out evaluation.
-- Test stopping propagation early for tracks whose mask disappears, and whether FLAIR's confirmation rule can be made less brittle, while keeping a background search so newly entering sharks are not missed.
+- Evaluate whether track-level evidence (how long a mask persists within its propagation window, CLIP scores across a track's frames, candidate mask/trajectory features that prove useful) can replace the manual pruning step, on multiple videos with held-out evaluation.
+- Test early stopping after sustained mask disappearance or low confidence, and whether FLAIR's confirmation rule can be made less brittle, while keeping a background search so newly entering sharks are not missed.
 
 ## Related work that motivated this
 
