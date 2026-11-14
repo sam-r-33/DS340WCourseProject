@@ -1,0 +1,4 @@
+track_id,n_obs,median,q25,frac_ge_095,keep_median_clip,keep_q25_clip,selected
+1,10,0.883,0.84,0.2,False,False,False
+2,10,0.9404,0.8997,0.1,False,False,False
+3,10,0.9418,0.838,0.4,False,False,False

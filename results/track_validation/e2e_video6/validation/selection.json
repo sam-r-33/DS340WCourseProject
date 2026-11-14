@@ -1,0 +1,14 @@
+{
+  "track_filter": "median_clip",
+  "clip_pad_square": false,
+  "threshold": 0.95,
+  "max_obs": 10,
+  "tracks_available": [
+    1,
+    2,
+    3
+  ],
+  "tracks_kept": [],
+  "keep_median_clip": [],
+  "keep_q25_clip": []
+}

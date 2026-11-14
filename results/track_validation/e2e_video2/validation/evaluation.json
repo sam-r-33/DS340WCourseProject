@@ -1,0 +1,153 @@
+{
+  "video": "video2",
+  "n_annotated_frames": 38,
+  "track_labels": {
+    "2": {
+      "n_frames": 38,
+      "n_associated": 0,
+      "shark": false
+    },
+    "3": {
+      "n_frames": 38,
+      "n_associated": 34,
+      "shark": true
+    },
+    "7": {
+      "n_frames": 38,
+      "n_associated": 0,
+      "shark": false
+    },
+    "9": {
+      "n_frames": 38,
+      "n_associated": 0,
+      "shark": false
+    },
+    "11": {
+      "n_frames": 36,
+      "n_associated": 0,
+      "shark": false
+    },
+    "13": {
+      "n_frames": 36,
+      "n_associated": 17,
+      "shark": false
+    },
+    "17": {
+      "n_frames": 33,
+      "n_associated": 0,
+      "shark": false
+    },
+    "22": {
+      "n_frames": 21,
+      "n_associated": 0,
+      "shark": false
+    },
+    "25": {
+      "n_frames": 21,
+      "n_associated": 0,
+      "shark": false
+    },
+    "26": {
+      "n_frames": 21,
+      "n_associated": 0,
+      "shark": false
+    },
+    "27": {
+      "n_frames": 15,
+      "n_associated": 0,
+      "shark": false
+    },
+    "40": {
+      "n_frames": 19,
+      "n_associated": 19,
+      "shark": true
+    },
+    "46": {
+      "n_frames": 14,
+      "n_associated": 0,
+      "shark": false
+    },
+    "45": {
+      "n_frames": 10,
+      "n_associated": 0,
+      "shark": false
+    },
+    "59": {
+      "n_frames": 4,
+      "n_associated": 0,
+      "shark": false
+    }
+  },
+  "methods": {
+    "baseline (all tracks)": {
+      "frames_scored": 38,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.6586697359082614,
+      "union_dice": 0.14206388958435015,
+      "gt_instances": 76,
+      "gt_found": 71,
+      "recall": 0.9342105263157895,
+      "tracks_present": 15,
+      "tracks_retained": 15,
+      "shark_tracks_retained": 2,
+      "extra_tracks_retained": 13
+    },
+    "oracle (uses GT)": {
+      "frames_scored": 38,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.6137378740053632,
+      "union_dice": 0.8169848175210012,
+      "gt_instances": 76,
+      "gt_found": 68,
+      "recall": 0.8947368421052632,
+      "tracks_present": 15,
+      "tracks_retained": 2,
+      "shark_tracks_retained": 2,
+      "extra_tracks_retained": 0
+    },
+    "median_clip": {
+      "frames_scored": 38,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.6586697359082614,
+      "union_dice": 0.6860198879549507,
+      "gt_instances": 76,
+      "gt_found": 71,
+      "recall": 0.9342105263157895,
+      "tracks_present": 15,
+      "tracks_retained": 3,
+      "shark_tracks_retained": 2,
+      "extra_tracks_retained": 1
+    },
+    "q25_clip": {
+      "frames_scored": 38,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.6586697359082614,
+      "union_dice": 0.6860198879549507,
+      "gt_instances": 76,
+      "gt_found": 71,
+      "recall": 0.9342105263157895,
+      "tracks_present": 15,
+      "tracks_retained": 3,
+      "shark_tracks_retained": 2,
+      "extra_tracks_retained": 1
+    },
+    "selected (median_clip)": {
+      "frames_scored": 38,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.6586697359082614,
+      "union_dice": 0.6860198879549507,
+      "gt_instances": 76,
+      "gt_found": 71,
+      "recall": 0.9342105263157895,
+      "tracks_present": 15,
+      "tracks_retained": 3,
+      "shark_tracks_retained": 2,
+      "extra_tracks_retained": 1
+    }
+  }
+}

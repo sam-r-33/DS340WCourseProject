@@ -1,0 +1,83 @@
+{
+  "video": "blacktip",
+  "n_annotated_frames": 12,
+  "track_labels": {
+    "2": {
+      "n_frames": 12,
+      "n_associated": 12,
+      "shark": true
+    }
+  },
+  "methods": {
+    "baseline (all tracks)": {
+      "frames_scored": 12,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.9028220138748232,
+      "union_dice": 0.9028220138748232,
+      "gt_instances": 12,
+      "gt_found": 12,
+      "recall": 1.0,
+      "tracks_present": 1,
+      "tracks_retained": 1,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 0
+    },
+    "oracle (uses GT)": {
+      "frames_scored": 12,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.9028220138748232,
+      "union_dice": 0.9028220138748232,
+      "gt_instances": 12,
+      "gt_found": 12,
+      "recall": 1.0,
+      "tracks_present": 1,
+      "tracks_retained": 1,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 0
+    },
+    "median_clip": {
+      "frames_scored": 12,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.9028220138748232,
+      "union_dice": 0.9028220138748232,
+      "gt_instances": 12,
+      "gt_found": 12,
+      "recall": 1.0,
+      "tracks_present": 1,
+      "tracks_retained": 1,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 0
+    },
+    "q25_clip": {
+      "frames_scored": 12,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.9028220138748232,
+      "union_dice": 0.9028220138748232,
+      "gt_instances": 12,
+      "gt_found": 12,
+      "recall": 1.0,
+      "tracks_present": 1,
+      "tracks_retained": 1,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 0
+    },
+    "selected (median_clip)": {
+      "frames_scored": 12,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.9028220138748232,
+      "union_dice": 0.9028220138748232,
+      "gt_instances": 12,
+      "gt_found": 12,
+      "recall": 1.0,
+      "tracks_present": 1,
+      "tracks_retained": 1,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 0
+    }
+  }
+}

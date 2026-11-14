@@ -1,0 +1,93 @@
+{
+  "video": "video6",
+  "n_annotated_frames": 66,
+  "track_labels": {
+    "2": {
+      "n_frames": 66,
+      "n_associated": 0,
+      "shark": false
+    },
+    "1": {
+      "n_frames": 23,
+      "n_associated": 0,
+      "shark": false
+    },
+    "3": {
+      "n_frames": 66,
+      "n_associated": 66,
+      "shark": true
+    }
+  },
+  "methods": {
+    "baseline (all tracks)": {
+      "frames_scored": 66,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.7171510407246039,
+      "union_dice": 0.2812547094800556,
+      "gt_instances": 86,
+      "gt_found": 66,
+      "recall": 0.7674418604651163,
+      "tracks_present": 3,
+      "tracks_retained": 3,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 2
+    },
+    "oracle (uses GT)": {
+      "frames_scored": 66,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.7171510407246039,
+      "union_dice": 0.7887226908779925,
+      "gt_instances": 86,
+      "gt_found": 66,
+      "recall": 0.7674418604651163,
+      "tracks_present": 3,
+      "tracks_retained": 1,
+      "shark_tracks_retained": 1,
+      "extra_tracks_retained": 0
+    },
+    "median_clip": {
+      "frames_scored": 66,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.0,
+      "union_dice": 0.0,
+      "gt_instances": 86,
+      "gt_found": 0,
+      "recall": 0.0,
+      "tracks_present": 3,
+      "tracks_retained": 0,
+      "shark_tracks_retained": 0,
+      "extra_tracks_retained": 0
+    },
+    "q25_clip": {
+      "frames_scored": 66,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.0,
+      "union_dice": 0.0,
+      "gt_instances": 86,
+      "gt_found": 0,
+      "recall": 0.0,
+      "tracks_present": 3,
+      "tracks_retained": 0,
+      "shark_tracks_retained": 0,
+      "extra_tracks_retained": 0
+    },
+    "selected (median_clip)": {
+      "frames_scored": 66,
+      "missing_frames": 0,
+      "frames_without_gt": 0,
+      "authors_dice": 0.0,
+      "union_dice": 0.0,
+      "gt_instances": 86,
+      "gt_found": 0,
+      "recall": 0.0,
+      "tracks_present": 3,
+      "tracks_retained": 0,
+      "shark_tracks_retained": 0,
+      "extra_tracks_retained": 0
+    }
+  }
+}
