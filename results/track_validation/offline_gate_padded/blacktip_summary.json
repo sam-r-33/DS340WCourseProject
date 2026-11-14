@@ -1,0 +1,79 @@
+{
+  "video": "blacktip",
+  "baseline": {
+    "frames_scored": 25,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.8785834751900005,
+    "union_dice": 0.8785834751900005,
+    "gt_instances": 25,
+    "gt_found": 25,
+    "recall": 1.0,
+    "tracks_present": 1,
+    "tracks_retained": 1,
+    "shark_tracks_retained": 1,
+    "extra_tracks_retained": 0
+  },
+  "oracle": {
+    "frames_scored": 25,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.8785834751900005,
+    "union_dice": 0.8785834751900005,
+    "gt_instances": 25,
+    "gt_found": 25,
+    "recall": 1.0,
+    "tracks_present": 1,
+    "tracks_retained": 1,
+    "shark_tracks_retained": 1,
+    "extra_tracks_retained": 0
+  },
+  "median_clip": {
+    "frames_scored": 25,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.8785834751900005,
+    "union_dice": 0.8785834751900005,
+    "gt_instances": 25,
+    "gt_found": 25,
+    "recall": 1.0,
+    "tracks_present": 1,
+    "tracks_retained": 1,
+    "shark_tracks_retained": 1,
+    "extra_tracks_retained": 0
+  },
+  "median_clip_gate": {
+    "extra_removed_frac": NaN,
+    "ok_extra": false,
+    "ok_recall": true,
+    "ok_dice": true,
+    "passed": false
+  },
+  "median_clip_kept": [
+    1
+  ],
+  "q25_clip": {
+    "frames_scored": 25,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.8785834751900005,
+    "union_dice": 0.8785834751900005,
+    "gt_instances": 25,
+    "gt_found": 25,
+    "recall": 1.0,
+    "tracks_present": 1,
+    "tracks_retained": 1,
+    "shark_tracks_retained": 1,
+    "extra_tracks_retained": 0
+  },
+  "q25_clip_gate": {
+    "extra_removed_frac": NaN,
+    "ok_extra": false,
+    "ok_recall": true,
+    "ok_dice": true,
+    "passed": false
+  },
+  "q25_clip_kept": [
+    1
+  ]
+}

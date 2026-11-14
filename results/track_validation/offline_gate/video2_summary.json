@@ -1,0 +1,84 @@
+{
+  "video": "video2",
+  "baseline": {
+    "frames_scored": 38,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.7950421883665338,
+    "union_dice": 0.1239314859702002,
+    "gt_instances": 76,
+    "gt_found": 76,
+    "recall": 1.0,
+    "tracks_present": 27,
+    "tracks_retained": 27,
+    "shark_tracks_retained": 3,
+    "extra_tracks_retained": 24
+  },
+  "oracle": {
+    "frames_scored": 38,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.7950421883665338,
+    "union_dice": 0.68932282742159,
+    "gt_instances": 76,
+    "gt_found": 76,
+    "recall": 1.0,
+    "tracks_present": 27,
+    "tracks_retained": 3,
+    "shark_tracks_retained": 3,
+    "extra_tracks_retained": 0
+  },
+  "median_clip": {
+    "frames_scored": 38,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.7950421883665338,
+    "union_dice": 0.6743102565507388,
+    "gt_instances": 76,
+    "gt_found": 76,
+    "recall": 1.0,
+    "tracks_present": 27,
+    "tracks_retained": 4,
+    "shark_tracks_retained": 3,
+    "extra_tracks_retained": 1
+  },
+  "median_clip_gate": {
+    "extra_removed_frac": 0.9583333333333334,
+    "ok_extra": true,
+    "ok_recall": true,
+    "ok_dice": true,
+    "passed": true
+  },
+  "median_clip_kept": [
+    5,
+    13,
+    47,
+    77
+  ],
+  "q25_clip": {
+    "frames_scored": 38,
+    "missing_frames": 0,
+    "frames_without_gt": 0,
+    "authors_dice": 0.7950421883665338,
+    "union_dice": 0.68932282742159,
+    "gt_instances": 76,
+    "gt_found": 76,
+    "recall": 1.0,
+    "tracks_present": 27,
+    "tracks_retained": 3,
+    "shark_tracks_retained": 3,
+    "extra_tracks_retained": 0
+  },
+  "q25_clip_gate": {
+    "extra_removed_frac": 1.0,
+    "ok_extra": true,
+    "ok_recall": true,
+    "ok_dice": true,
+    "passed": true
+  },
+  "q25_clip_kept": [
+    5,
+    13,
+    47
+  ]
+}
