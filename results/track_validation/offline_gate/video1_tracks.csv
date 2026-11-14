@@ -1,0 +1,4 @@
+track_id,shark_associated,n_obs,median,q25,frac_ge_095,keep_median_clip,keep_q25_clip
+1,True,10,0.9718,0.9672,0.9,True,True
+2,True,7,0.9791,0.9495,0.7143,True,False
+3,True,10,0.9659,0.9074,0.6,True,False
