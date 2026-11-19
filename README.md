@@ -62,28 +62,20 @@ Results are saved to `PROJECT_DIR/runs/<RUN_NAME>/` on Drive: zipped masks, boxe
 
 ## Technical demo (quick start)
 
-This runs notebook 04 on the 8-second blacktip clip from a freshly downloaded copy of this repository and is intended to reproduce the blacktip row of the paper's Table III. You need a Google account and Google Colab with a GPU runtime. Our reported results came from an NVIDIA L4 (torch 2.6.0+cu124); other CUDA GPUs may give small numerical or runtime differences, and we have not tested them with this demo path.
+This runs notebook 04 on the 8-second blacktip clip from a fresh download of this repository and reproduces the blacktip row of the paper's Table III. You need a Google account and Google Colab with a GPU runtime. We ran it end to end on an NVIDIA L4 (torch 2.6.0+cu124) from a new Drive folder, and it reproduced our committed blacktip results exactly. Other CUDA GPUs may give small numerical or runtime differences, and we have not tested them with this demo path.
 
-1. In a browser, open https://github.com/sam-r-33/DS340WCourseProject, choose **Code, Download ZIP**, and save `DS340WCourseProject-main.zip`. Unzip it on your computer.
-2. Open https://colab.research.google.com, choose **File, Upload notebook**, and select `notebooks/04_FLAIR_track_validation.ipynb` from the unzipped folder.
-3. Choose **Runtime, Change runtime type**, select a **GPU** (L4 if available), and connect.
-4. Open the **Files** pane (folder icon on the left) and drag in `DS340WCourseProject-main.zip` (the original ZIP, not the unzipped folder). Add a code cell at the top of the notebook with this line and run it. It creates `/content/DS340WCourseProject-main` (`-o` makes it safe to run again, for example after Run all):
-   ```
-   !unzip -oq /content/DS340WCourseProject-main.zip -d /content
-   ```
-   If the upload is slow, this single cell downloads and unzips the repository straight from GitHub instead (same folder name):
-   ```
-   !wget -q -O /content/repo.zip https://github.com/sam-r-33/DS340WCourseProject/archive/refs/heads/main.zip && unzip -oq /content/repo.zip -d /content
-   ```
-5. Leave the **Configuration** cell as it is. It already points to `REPO_DIR = "/content/DS340WCourseProject-main"`, sets `EVAL_VIDEO = "blacktip"`, and writes outputs and the SAM 2 checkpoint to a **new** Drive folder, `MyDrive/DS340_demo`. That folder must not exist yet; the notebook creates it. If you cloned with `git clone` instead of using the ZIP, change only the `REPO_DIR` line to `/content/DS340WCourseProject`.
-6. Choose **Runtime, Run all**. Allow Drive access when asked. The first run installs dependencies and downloads the SAM 2 checkpoint into `DS340_demo/checkpoints/`. If Colab asks you to restart the runtime, restart it (do not disconnect) and **Run all** again. The pipeline stages took about 4 minutes in our L4 run, plus the install and checkpoint download.
-7. Results are written to `MyDrive/DS340_demo/runs/dev/`. The ground-truth scoring cell prints the Dice and recall values and saves them to `validation/evaluation.json`; the kept track and its score are in `validation/tracks.csv`.
+1. Open https://colab.research.google.com, choose **File, Open notebook**, select the **GitHub** tab, enter `sam-r-33/DS340WCourseProject`, and open `notebooks/04_FLAIR_track_validation.ipynb`. (Alternative: download the repository ZIP from GitHub with **Code, Download ZIP**, unzip it, and use **File, Upload notebook**.)
+2. Choose **Runtime, Change runtime type**, select a **GPU** (L4 if available), and connect.
+3. Leave every cell as it is. The first code cell downloads the repository from GitHub and unzips it into `/content/DS340WCourseProject-main`. The **Configuration** cell already points to that folder, sets `EVAL_VIDEO = "blacktip"`, and writes outputs and the SAM 2 checkpoint to a **new** Drive folder, `MyDrive/DS340_demo`. That folder must not exist yet; the notebook creates it.
+4. Choose **Runtime, Run all**. Allow Drive access when asked. The first run installs dependencies and downloads the SAM 2 checkpoint into `DS340_demo/checkpoints/`. If Colab asks you to restart the runtime, restart it (do not disconnect) and **Run all** again.
+5. Results are written to `MyDrive/DS340_demo/runs/dev/`. The ground-truth scoring cell prints the Dice and recall values and saves them to `validation/evaluation.json`; the kept track and its score are in `validation/tracks.csv`.
 
-**Expected L4 result (from our recorded L4 experiment)**
-- exactly 1 track retained (track ID 2);
-- track-level CLIP median 0.998 (0.9981);
-- best-match Dice 0.903 and union Dice 0.903 (Table III, blacktip row);
-- recall 1.0 on the 12 annotated frames inside the clip.
+**Verified L4 technical-demo result**
+- 237 frames, 8 sampled for mask generation, 22 candidate boxes, 13 kept after CLIP filtering;
+- exactly 1 track retained (track ID 2), track-level CLIP median 0.998 (0.9981);
+- 12 annotated frames inside the clip; best-match Dice 0.903 and union Dice 0.903 (0.9028), recall 1.0 (Table III, blacktip row);
+- `evaluation.json` and `tracks.csv` are identical to the committed `results/track_validation/e2e_blacktip/validation/` files;
+- the pipeline stages took about 4 minutes (mask generation 46 s, CLIP filtering 7 s, propagation 169 s), plus the install and checkpoint download.
 
 **Core result that should reproduce**
 - the blacktip shark track is retained by the automatic validator;
@@ -94,6 +86,8 @@ This runs notebook 04 on the 8-second blacktip clip from a freshly downloaded co
 - the track ID, the exact CLIP decimals, and intermediate mask or candidate counts;
 - runtime;
 - possibly the number of tracks, if a borderline candidate changes upstream.
+
+**Messages that are expected and do not affect the result:** a Hugging Face `HF_TOKEN` warning; a SAM 2 warning about `_C.so` and "Skipping the post-processing step"; "Duplicate mask!" lines during propagation; and "No baseline found ... skipping regression check" at the end (that check compares against notebook 01 output, which is not part of the demo).
 
 The notebook scores up to 10 frames per track, so its median (0.998) is slightly higher than the 0.996 in Section III-C of the paper, which came from notebook 03 and used up to 5 frames. The data in `demo_data/` is third-party and credited in `demo_data/README.md`.
 
