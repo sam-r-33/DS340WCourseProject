@@ -18,3 +18,5 @@ __pycache__/
 .ipynb_checkpoints/
 .env
 .DS_Store
+fig/
+val_tables.json
