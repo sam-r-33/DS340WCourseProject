@@ -20,3 +20,5 @@ __pycache__/
 .DS_Store
 fig/
 val_tables.json
+# Demo data: allow the small example video (see demo_data/README.md)
+!demo_data/**/*.mp4
