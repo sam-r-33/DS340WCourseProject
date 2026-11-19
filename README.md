@@ -35,6 +35,7 @@ This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks i
   - `test_modules.py`, `test_gate_runner.py`: tests on synthetic data (run with `python3 <file>`)
   - `README_gate.txt`: how to run the offline gate in Colab
 - `analysis/` : gate replay (`replay_gate_comparison.py`) and figure scripts
+- `demo_data/` : the example blacktip video and its ground-truth masks, for the technical demo (third-party data, credited in `demo_data/README.md`)
 - `results/gate_replay/` : outputs of the gate replay (`variant_comparison.csv`, `gate_replay_summary.json`)
 - `PROTOCOL.md` : the frozen rule, metrics and pass criteria, written before the multi-clip results
 - `results/track_validation/` : result files for the novel block
@@ -59,6 +60,43 @@ This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks i
 
 Results are saved to `PROJECT_DIR/runs/<RUN_NAME>/` on Drive: zipped masks, boxes, the tracked video, `run_info.json`, an `analysis/` folder (notebook 03 only) and a `validation/` folder (notebook 04 only).
 
+## Technical demo (quick start)
+
+This runs notebook 04 on the 8-second blacktip clip from a freshly downloaded copy of this repository and is intended to reproduce the blacktip row of the paper's Table III. You need a Google account and Google Colab with a GPU runtime. Our reported results came from an NVIDIA L4 (torch 2.6.0+cu124); other CUDA GPUs may give small numerical or runtime differences, and we have not tested them with this demo path.
+
+1. In a browser, open https://github.com/sam-r-33/DS340WCourseProject, choose **Code, Download ZIP**, and save `DS340WCourseProject-main.zip`. Unzip it on your computer.
+2. Open https://colab.research.google.com, choose **File, Upload notebook**, and select `notebooks/04_FLAIR_track_validation.ipynb` from the unzipped folder.
+3. Choose **Runtime, Change runtime type**, select a **GPU** (L4 if available), and connect.
+4. Open the **Files** pane (folder icon on the left) and drag in `DS340WCourseProject-main.zip` (the original ZIP, not the unzipped folder). Add a code cell at the top of the notebook with this line and run it. It creates `/content/DS340WCourseProject-main` (`-o` makes it safe to run again, for example after Run all):
+   ```
+   !unzip -oq /content/DS340WCourseProject-main.zip -d /content
+   ```
+   If the upload is slow, this single cell downloads and unzips the repository straight from GitHub instead (same folder name):
+   ```
+   !wget -q -O /content/repo.zip https://github.com/sam-r-33/DS340WCourseProject/archive/refs/heads/main.zip && unzip -oq /content/repo.zip -d /content
+   ```
+5. Leave the **Configuration** cell as it is. It already points to `REPO_DIR = "/content/DS340WCourseProject-main"`, sets `EVAL_VIDEO = "blacktip"`, and writes outputs and the SAM 2 checkpoint to a **new** Drive folder, `MyDrive/DS340_demo`. That folder must not exist yet; the notebook creates it. If you cloned with `git clone` instead of using the ZIP, change only the `REPO_DIR` line to `/content/DS340WCourseProject`.
+6. Choose **Runtime, Run all**. Allow Drive access when asked. The first run installs dependencies and downloads the SAM 2 checkpoint into `DS340_demo/checkpoints/`. If Colab asks you to restart the runtime, restart it (do not disconnect) and **Run all** again. The pipeline stages took about 4 minutes in our L4 run, plus the install and checkpoint download.
+7. Results are written to `MyDrive/DS340_demo/runs/dev/`. The ground-truth scoring cell prints the Dice and recall values and saves them to `validation/evaluation.json`; the kept track and its score are in `validation/tracks.csv`.
+
+**Expected L4 result (from our recorded L4 experiment)**
+- exactly 1 track retained (track ID 2);
+- track-level CLIP median 0.998 (0.9981);
+- best-match Dice 0.903 and union Dice 0.903 (Table III, blacktip row);
+- recall 1.0 on the 12 annotated frames inside the clip.
+
+**Core result that should reproduce**
+- the blacktip shark track is retained by the automatic validator;
+- its track-level CLIP score stays above the 0.95 threshold;
+- best-match and union Dice stay approximately 0.903, and recall stays 1.0.
+
+**May vary with the GPU and software environment**
+- the track ID, the exact CLIP decimals, and intermediate mask or candidate counts;
+- runtime;
+- possibly the number of tracks, if a borderline candidate changes upstream.
+
+The notebook scores up to 10 frames per track, so its median (0.998) is slightly higher than the 0.996 in Section III-C of the paper, which came from notebook 03 and used up to 5 frames. The data in `demo_data/` is third-party and credited in `demo_data/README.md`.
+
 ## Data
 
 We use the public dataset released with the FLAIR paper:
@@ -66,7 +104,7 @@ We use the public dataset released with the FLAIR paper:
 - Zenodo record: https://doi.org/10.5281/zenodo.15845961 (DOI 10.5281/zenodo.15845961, CC BY 4.0)
 - FLAIR code archive: https://doi.org/10.5281/zenodo.16056059 (DOI 10.5281/zenodo.16056059, MIT)
 
-The dataset is about 45 GB, so it is **not** stored in this repository. The reproduction and instrumentation study uses the example blacktip reef shark clip (`example_video_blacktip.mp4`, from `FLAIR_code.zip` in the Zenodo record and in the original FLAIR repository), first 8 seconds, 237 frames. The track-validation experiments additionally use the released masks and ground-truth sampled frames for nine clips, plus end-to-end runs on blacktip and videos 2, 5 and 6.
+The dataset is about 45 GB, so it is **not** stored in this repository. The only exception is `demo_data/`, which holds the example blacktip video and its 25 ground-truth masks so the technical demo can run without the full dataset. The reproduction and instrumentation study uses the example blacktip reef shark clip (`example_video_blacktip.mp4`, from `FLAIR_code.zip` in the Zenodo record and in the original FLAIR repository), first 8 seconds, 237 frames. The track-validation experiments additionally use the released masks and ground-truth sampled frames for nine clips, plus end-to-end runs on blacktip and videos 2, 5 and 6.
 
 ## Results: reproduction and instrumentation (one clip)
 
