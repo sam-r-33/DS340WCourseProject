@@ -1,6 +1,6 @@
 # FLAIR reproduction, analysis, and track validation (DS340W)
 
-This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks in aerial video, adds instrumentation to study where the pipeline spends computation and how its candidate and track filtering behaves, and tests one modified block: an automatic, track-level CLIP check that replaces FLAIR's manual track pruning.
+This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks in aerial video, adds instrumentation to study where the pipeline spends computation and how its candidate and track filtering behaves, and tests two modular changes: an automatic, track-level CLIP check that replaces FLAIR's manual track pruning (run end-to-end in notebook 04), and a temporal corroboration gate that skips propagation for isolated candidates (evaluated offline by a replay).
 
 - Course project: DS340W, Penn State
 - Team: Sam Ruch & Shawn Agaon
@@ -34,6 +34,8 @@ This repository reproduces **FLAIR**, a zero-shot pipeline for tracking sharks i
   - `gate_runner.py`: offline gate on the released masks, plus diagnostics
   - `test_modules.py`, `test_gate_runner.py`: tests on synthetic data (run with `python3 <file>`)
   - `README_gate.txt`: how to run the offline gate in Colab
+- `analysis/` : gate replay (`replay_gate_comparison.py`) and figure scripts
+- `results/gate_replay/` : outputs of the gate replay (`variant_comparison.csv`, `gate_replay_summary.json`)
 - `PROTOCOL.md` : the frozen rule, metrics and pass criteria, written before the multi-clip results
 - `results/track_validation/` : result files for the novel block
   - `offline_gate/`: frozen scorer on released masks, 9 clips (`diagnostics/` has crop montages for videos 3 and 5)
@@ -122,7 +124,7 @@ Median-score rule, scored on annotated frames only. Details per clip are in `res
 
 **The pre-specified gate fails** (it required `median_clip` to pass on videos 5 and 2 and not to harm others). The raw 25th-percentile rule is worse: it deletes real sharks on videos 1 and 7 as well.
 
-**The offline and end-to-end evaluations can differ.** The offline gate scores tracks only on annotated frames, where the shark is likely visible; end-to-end runs score each track across its whole life. On video 6, for example, the shark scores 0.974 on annotated frames (offline) but its end-to-end median is 0.942. We have not verified this explanation beyond that one diagnostic, so the offline gate may be optimistic, but we cannot say by how much.
+**The offline and end-to-end evaluations can differ.** The offline gate scores tracks only on annotated frames, where the shark is likely visible; end-to-end runs score each track across its whole life. On video 6, for example, the shark scores 0.964 on annotated frames (offline) but its end-to-end median is 0.942. We have not verified this explanation beyond that one diagnostic, so the offline gate may be optimistic, but we cannot say by how much.
 
 ### Exploratory: pad-to-square variant (post hoc)
 
@@ -133,20 +135,39 @@ CLIP's default preprocessing center-crops to a square, which can trim elongated 
 - **Tests (no GPU or data needed):** `python3 code/test_modules.py` and `python3 code/test_gate_runner.py`.
 - **Offline gate:** follow `code/README_gate.txt` in Colab (needs the released masks and ground truth from the Zenodo record, in `UnzippedData/`).
 - **End-to-end:** open `notebooks/04_FLAIR_track_validation.ipynb`, set `TRACK_FILTER`, `SOURCE_VIDEO` (or `FRAMES_SOURCE_DIR`) and the ground-truth paths in the Configuration cell, and run all. Do not re-run the Configuration cell partway through a session, because it resets the run state.
+- **Gate replay:** see "Temporal corroboration gate (offline replay)" below (CPU only).
+
+## Temporal corroboration gate (offline replay)
+
+A second modular change: before SAM 2 propagation, drop a CLIP-accepted box that has no accepted box on an adjacent sampled frame within one mean box diagonal. It is **not** part of notebook 04. It is evaluated by a replay of the logged blacktip candidates (`results/clip_candidates.csv`, `results/track_features.csv`) through FLAIR's propagation schedule.
+
+Run from the repository root (CPU only, takes seconds): `python3 analysis/replay_gate_comparison.py results`
+
+The script first asserts that the replay reproduces the logged baseline (8 tracks, 868 + 118 = 986 frame-passes). Expected result for the gate (lambda = 1): 507 frame-passes (48.6% fewer), 3 tracks launched, 0 off-shark tracks, 8 of 8 shark candidates kept. Outputs: `results/gate_replay/variant_comparison.csv` and `gate_replay_summary.json`.
+
+This is a simulation on one clip. It has not been run inside the pipeline on a GPU. The on-shark and off-shark tags used to count off-shark tracks come from our own choice of kept track on the blacktip clip, not from ground-truth masks.
+
+Known blind spot: the gate drops a shark that is seen on only one sampled frame, for example one that enters on the last sampled frame, moves quickly, or is visible only briefly. Exempting the last sampled frame (variant D2) avoids part of this but saves less (36.7%).
+
+Optional: `python3 analysis/make_figures_tcc.py results` and `python3 analysis/make_figures_validation.py results/track_validation` redraw the gate and validation figures from the committed results (run from the repository root; both need matplotlib, and the second also needs Pillow). Output file names do not follow the paper's figure numbers. They write a `fig/` folder and `val_tables.json` in the current folder; do not commit those.
 
 ## Limitations
 
 - The reproduction and instrumentation results use one clip, one animal. Nothing there shows that any filter rule generalizes.
 - The track-validation evidence is small: four end-to-end clips and nine offline clips, several with only one or two sharks. The offline gate may be optimistic, and the pad-to-square variant is post hoc and untested end-to-end.
 - Candidate labels in the instrumentation results come from our own `KEEP_KEYS` choice. In the track-validation results, track labels (shark-associated or not) come from ground-truth masks.
+- The temporal corroboration gate is an offline replay on one clip (blacktip). It has not been run inside the pipeline, it does not measure mask quality (Dice), and it can drop a shark seen on only one sampled frame.
 - Our end-to-end baselines differ from the released masks (different track counts), so results are relative to our own runs.
 - Tracks that overlap the shark but were deleted count as "deleted" in the compute figures, not as false detections.
-- The reproduction check shows our cleaned notebook matches the original notebook's output. We have not yet reproduced the paper's reported Dice score against ground-truth masks.
+- The reproduction check shows our cleaned notebook matches the original notebook's output. Our recomputed Dice values on the released masks are close to the published values (0.820 vs 0.821 mean on videos 3 to 7, 0.920 vs 0.919 on the white shark clip, 0.879 vs 0.881 on the blacktip clip) but lower on video 2 (0.795 vs 0.807). We have not checked video 1 against the supplementary table, so we do not claim to reproduce the paper's Dice exactly.
 
-## Planned work
+## Future work
 
-- Develop richer track-level validation beyond a fixed CLIP threshold, including geometry, contrast, hybrid semantic/geometric features (how long a mask persists within its propagation window, mask and trajectory features) and alternative temporal aggregation, with held-out clips and a separate no-harm evaluation.
-- Test early stopping after sustained mask disappearance or low confidence, and whether FLAIR's confirmation rule can be made less brittle, while keeping a background search so newly entering sharks are not missed.
+If we had four more months, we would investigate three directions. They match Section VIII of the paper. None has been implemented or tested.
+
+- **Hybrid CLIP and geometry/contrast track classifier.** Replace the single median-CLIP rule with a small interpretable classifier (for example logistic regression or a shallow decision tree) that reads CLIP scores together with shape (elongation, relative area, area stability), persistence and mask-to-water contrast, tested by holding out one whole video at a time. Limits: only 43 labeled tracks (14 shark, 29 extra, most extras from one video).
+- **Adaptive candidate detection for higher recall.** First trace where a missed shark (for example the second shark on video 6) drops out of the pipeline, then test denser sampling or a targeted rescue pass with looser filters near uncertain or disappearing detections. Extra candidates would need stronger pruning, such as the classifier above, or a person. This differs from the temporal corroboration gate, which saves compute.
+- **FLAIR-assisted lightweight supervised model.** Use FLAIR to propose masks on representative footage, have a person verify or correct them, train a small supervised model, and compare it with FLAIR on similar and on changed footage (a new site, species, water conditions or camera).
 
 ## Related work that motivated this
 
